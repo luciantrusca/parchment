@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+public/books
+
+*storybook.log
+storybook-static
+specs.md
