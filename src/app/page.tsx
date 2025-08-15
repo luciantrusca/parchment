@@ -5,12 +5,13 @@ import { useState } from "react";
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [bookText, setBookText] = useState<string | null>(null);
+  const textLimit = 1000;
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setFileName(file.name);
-  // 1) Validate file (e.g. name.endsWith('.epub'), size limit)
+  // 1) Validate file (e.g. name.endsWith('.epub')
     if (!file.name?.endsWith('.epub')) {
       alert('Please upload a valid EPUB file.');
       return;
@@ -48,10 +49,18 @@ export default function Home() {
               className="hidden"
             />
           </label>
-          <div>{bookText?.substring(0,1000)}</div>
           {fileName && <span className="text-sm text-gray-600">{fileName}</span>}
         </div>
-        
+        <div className="flex flex-row gap-2">
+          <div>
+            <span>Before:</span>
+            <div className="bg-amber-100 text-black p-2">{bookText?.substring(0,textLimit)}</div>
+          </div>
+          <div>
+            <span>Translated:</span>
+            <div className="bg-amber-100 text-black p-2">{bookText?.substring(0,textLimit)}</div>
+          </div>
+        </div>
       </main>
     </div>
   );

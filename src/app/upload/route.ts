@@ -1,4 +1,4 @@
-import extract from "../extract"
+import extract from "../../utils/extract"
 import path from 'path';
 import os from 'os';
 import { pathToFileURL } from "url";
@@ -6,7 +6,7 @@ import { writeFile } from "fs/promises";
 
 
 export async function POST(request: Request) {
-    // 
+    // Check if the request is valid
     if (!request.body || request.headers.get('Content-Type') !== 'application/epub+zip') {
         return new Response('No file uploaded', { status: 400 }); //400 Bad Request
     }

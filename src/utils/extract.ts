@@ -8,14 +8,15 @@ export default async function extract(epubURL: URL): Promise<string> {
 
     return new Promise<string>((resolve, reject) => {
         epub.getChapterRaw(epub.flow[5].id, function(err, xml){
+            // Check for errors while retrieving the chapter
             if(err) {
                 console.error(err);
                 return reject(err);
             }
+            // Process the XML
             try {
                 const processed_xml = cheerio.load(xml,{});
                 console.log("First chapter content:", processed_xml.text().substring(0, 1000) + "...");
-
                 return resolve(processed_xml.text());
             } catch (error) {
                 console.error(error);
