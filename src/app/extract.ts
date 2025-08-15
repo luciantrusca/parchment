@@ -1,24 +1,26 @@
 import {EPub} from 'epub2';
 import * as cheerio from 'cheerio';
 
+// const epubURL = 'public/books/Pendragon_The_Merchant_of_Death_DJ_MacHale.epub';
 
-const epubURL = 'public/books/Pendragon_The_Merchant_of_Death_DJ_MacHale.epub';
-// let epub = new EPub(epubURL, "", "");
+export default async function extract(epubURL: URL): Promise<string> {
+    let epub = await EPub.createAsync(epubURL.pathname,  "",  "");
 
-async function main(){
-    let epub = await EPub.createAsync(epubURL,  "",  "");
+    return new Promise<string>((resolve, reject) => {
+        epub.getChapterRaw(epub.flow[5].id, function(err, xml){
+            if(err) {
+                console.error(err);
+                return reject(err);
+            }
+            try {
+                const processed_xml = cheerio.load(xml,{});
+                console.log("First chapter content:", processed_xml.text().substring(0, 1000) + "...");
 
-    epub.getChapterRaw(epub.flow[4].id, function(err, xml){
-    if(err) {
-        console.error(err);
-        return;
-    }
-    // console.log("First chapter content:", xml.substring(0, 1000) + "...");
-    const processed_xml = cheerio.load(xml,{});
-    console.log("processed xml:", processed_xml.text());
-    
-});
-
+                return resolve(processed_xml.text());
+            } catch (error) {
+                console.error(error);
+                return reject(error);
+            }
+        });
+    });
 }
-
-main().catch(console.error);

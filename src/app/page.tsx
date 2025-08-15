@@ -4,8 +4,9 @@ import { useState } from "react";
 
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);
+  const [bookText, setBookText] = useState<string | null>(null);
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setFileName(file.name);
@@ -14,14 +15,18 @@ export default function Home() {
       alert('Please upload a valid EPUB file.');
       return;
     }
-  // 3) Prepare upload: const form = new FormData(); form.append('file', file);
-  
-  // 4) Send to server: await fetch('/api/upload', { method: 'POST', body: form })
-  //    - use AbortController if you want cancel support
-  //    - use XHR if you need upload progress events
+    // 4) Send to server: await fetch('/api/upload', { method: 'POST', body: form })
+    const response = await fetch('/upload', {
+      method: 'POST',
+      body: file,
+      headers: {
+        'Content-Type': 'application/epub+zip',
+      }
+    });
   // 5) Handle response:
-  //    - if { downloadUrl } -> set result and show download link
-  //    - if { jobId } -> poll /api/job/:id or use SSE/websocket for progress
+    const result = await response.text();
+    response.ok && setBookText(result);
+
   // 6) On error: set error state and stop loading
   // 7) Cleanup: clear AbortController, reset loading state if needed
     console.log('Selected file:', file);
@@ -43,6 +48,7 @@ export default function Home() {
               className="hidden"
             />
           </label>
+          <div>{bookText?.substring(0,1000)}</div>
           {fileName && <span className="text-sm text-gray-600">{fileName}</span>}
         </div>
         
