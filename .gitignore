@@ -44,3 +44,6 @@ public/books
 *storybook.log
 storybook-static
 specs.md
+package.json
+package-lock.json
+.gitignore

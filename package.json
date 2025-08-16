@@ -2,18 +2,26 @@
   "name": "parchment",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "run:script": "tsc $npm_config_file --outDir dist --target ES2022 --module NodeNext --moduleResolution NodeNext --esModuleInterop --skipLibCheck && node dist/$(basename $npm_config_file .ts).js && rm -rf dist"
+  },
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node"
   },
   "dependencies": {
     "cheerio": "^1.1.2",
     "epub2": "^3.0.2",
     "next": "15.4.6",
+    "openai": "^5.12.2",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
@@ -37,7 +45,8 @@
     "playwright": "^1.54.2",
     "storybook": "^9.1.2",
     "tailwindcss": "^4",
-    "typescript": "^5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   }
 }
