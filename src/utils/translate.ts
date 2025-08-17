@@ -3,7 +3,7 @@ const client = new OpenAI();
 
 try {
   const response = await client.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-5-nano",
       messages: [{
           role: "user",
           content: "Write a one-sentence bedtime story about a unicorn."
