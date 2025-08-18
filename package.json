@@ -15,7 +15,8 @@
   "compilerOptions": {
     "module": "ESNext",
     "target": "ESNext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true
   },
   "dependencies": {
     "cheerio": "^1.1.2",

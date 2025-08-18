@@ -1,16 +1,18 @@
 import OpenAI from "openai";
 const client = new OpenAI();
 
-try {
-  const response = await client.chat.completions.create({
-      model: "gpt-5-nano",
-      messages: [{
-          role: "user",
-          content: "Write a one-sentence bedtime story about a unicorn."
-      }],
-  });
+export default async function translate(text: string, targetLanguage: string) {
+  try {
+    const response = await client.responses.create({
+        model: "gpt-5-nano",
+        input: `Translate the following text into the target language: ${text}, Target Language: ${targetLanguage}`,
+        reasoning: { effort: "low" },
+      });
+    console.log(response.output_text);
+    return response.output_text;
 
-  console.log(response.choices[0].message.content);
-} catch (error) {
-  console.error("Error:", error);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+
 }

@@ -4,7 +4,9 @@ import { useState } from "react";
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [bookText, setBookText] = useState<string | null>(null);
+  const [translatedBookText, setTranslatedBookText] = useState<string | null>(null);
   const textLimit = 1000;
+  let [targetLanguage, setTargetLanguage] = useState<string>('romanian');
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -16,7 +18,7 @@ export default function Home() {
       return;
     }
     // 4) Send to server: await fetch('/api/upload', { method: 'POST', body: form })
-    const response = await fetch('/upload', {
+    const response = await fetch('/api/upload', {
       method: 'POST',
       body: file,
       headers: {
@@ -32,12 +34,32 @@ export default function Home() {
     console.log('Selected file:', file);
   }
 
+  async function handleTranslate(){
+    if (bookText) {
+      const res = await fetch ('/api/translate', {
+        method: 'POST',
+        body: JSON.stringify({ text: bookText, targetLanguage: targetLanguage }),
+        headers: {
+          'Content-Type': "application/json"
+        }
+      })
+
+      {/* Check server response is ok & update page */}
+      if (res.ok) {
+        const { translatedText } = await res.json();
+        console.log('Translated text:', translatedText);
+        setTranslatedBookText(translatedText);
+      }
+    }
+  }
+
   return (
     <div className="">
       <main className="font-sans m-5 align-middle items-center min-h-screen flex flex-col ">
         <h1 className="text-4xl font-bold">Parchment</h1>
         <p className="text-lg mb-3">AI powered EPUB translation tool.</p>
 
+        {/* Upload & settings */}
         <div className="flex items-center gap-4">
           <label className="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer">
             Upload EPUB
@@ -49,21 +71,29 @@ export default function Home() {
             />
           </label>
           {fileName && <span className="text-sm text-gray-600">{fileName}</span>}
+          {/* Show translate button  */}
+          <button className={`px-4 py-2 bg-green-600 text-white rounded
+            ${bookText ? '' : 'hidden'}`}
+            onClick={handleTranslate}
+          >
+            Translate
+          </button>
         </div>
-        <div className="flex flex-row gap-2">
-          {bookText && (
-            <>
-              <div>
-                <span>Before:</span>
-                <div className="bg-amber-100 text-black p-2">{bookText?.substring(0,textLimit)}</div>
-              </div>
 
-              <div>
-                <span>Translated:</span>
-                <div className="bg-amber-100 text-black p-2">{bookText?.substring(0,textLimit)}</div>
-              </div>
-            </>)}
-        </div>
+        {/* Text before & after */}
+        {bookText && (
+          <div className="flex flex-row gap-2">
+            <div>
+              <span>Before:</span>
+              <div className="bg-amber-100 text-black p-2">{bookText?.substring(0,textLimit)}</div>
+            </div>
+
+            <div>
+              <span>Translated:</span>
+              <div className="bg-amber-100 text-black p-2">{translatedBookText?.substring(0,textLimit)}</div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );

@@ -1,4 +1,4 @@
-import extract from "../../utils/extract"
+import extract from "../../../utils/extract.ts"
 import path from 'path';
 import os from 'os';
 import { pathToFileURL } from "url";
