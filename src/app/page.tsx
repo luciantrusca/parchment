@@ -19,7 +19,7 @@ export default function Home() {
       alert('Please upload a valid EPUB file.');
       return;
     }
-    // 4) Send to server: await fetch('/api/upload', { method: 'POST', body: form })
+    // 4) Send to server
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: file,
@@ -30,33 +30,32 @@ export default function Home() {
   // 5) Handle response:
     const result = await response.text();
     response.ok && setBookText(result);
-
-  // 6) On error: set error state and stop loading
-  // 7) Cleanup: clear AbortController, reset loading state if needed
     console.log('Selected file:', file);
   }
 
   async function handleTranslate(){
-    if (bookText) {
-      setLoadingTranslate(true);
+    console.error('handling translate once called');
+
+    if (!bookText) return
+    setLoadingTranslate(true);
+
+    try {
       const res = await fetch ('/api/translate', {
         method: 'POST',
         body: JSON.stringify({ text: bookText, targetLanguage: targetLanguage }),
         headers: {
           'Content-Type': "application/json"
         }
-      })
-
+      });
       {/* Check server response is ok & update page */}
       if (res.ok) {
         const { translatedText } = await res.json();
-        console.log('Translated text:', translatedText);
         setTranslatedBookText(translatedText);
-        setLoadingTranslate(false);
-      }
-      else {
-        setLoadingTranslate(false);
-      }
+        }
+    } catch (error) {
+      console.error('Error translating text:', error);
+    } finally {
+      setLoadingTranslate(false);
     }
   }
 
@@ -82,6 +81,7 @@ export default function Home() {
           <button className={`px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer
             ${bookText ? '' : 'hidden'}`}
             onClick={handleTranslate}
+            disabled={!bookText || loadingTranslate}
           >
             {loadingTranslate ? <BarLoader color="#36d7b7" /> : 'Translate'}
           </button>

@@ -14,7 +14,6 @@ export default async function translate(text: string, targetLanguage: string, te
         input: `Translate the following text into the target language: ${text.substring(0,textLimit)}, Target Language: ${targetLanguage}`,
         reasoning: { effort: "low" },
       });
-    console.log(response.output_text);
     return response.output_text;
 
   } catch (error) {
