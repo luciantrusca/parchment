@@ -1,6 +1,7 @@
 'use client';
 import { useState } from "react";
 import {BeatLoader, ClipLoader, DotLoader, PulseLoader, ScaleLoader, SquareLoader, SyncLoader} from "react-spinners";
+import TextPane from "./TextPane.tsx";
 
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);
@@ -87,19 +88,20 @@ export default function Home() {
             /> : 'Translate'}
           </button>
           {/* File name display */}
-          {fileName && <div className="text-sm text-gray-600">{fileName}</div>}
         </div>
+        {fileName && <div className="text-sm mt-1 mb-3 text-gray-600">{fileName}</div>}
+
 
         {/* Text before & after */}
         {bookText && (
           <div className="flex flex-row gap-2 flex-1/2 w-1/2 justify-stretched">
             <div>
               <span>Before:</span>
-              <div className="bg-amber-100 text-black p-2">{bookText?.substring(0,textLimit)}</div>
+              <TextPane text={bookText?.substring(0,textLimit)} />
             </div>
             <div>
               <span>Translated:</span>
-              <div className="bg-amber-100 text-black p-2">{translatedBookText?.substring(0,textLimit)}</div>
+              <TextPane text={translatedBookText?.substring(0,textLimit) ?? ''} />
             </div>
           </div>
 
