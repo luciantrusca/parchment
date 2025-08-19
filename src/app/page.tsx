@@ -59,7 +59,6 @@ export default function Home() {
   }
 
   return (
-    <div className="">
       <main className="font-sans m-5 align-middle items-center min-h-screen flex flex-col ">
         <h1 className="text-4xl font-bold">Parchment</h1>
         <p className="text-lg mb-3">AI powered EPUB translation tool.</p>
@@ -91,22 +90,27 @@ export default function Home() {
         </div>
         {fileName && <div className="text-sm mt-1 mb-3 text-gray-600">{fileName}</div>}
 
-
         {/* Text before & after */}
         {bookText && (
-          <div className="flex flex-row gap-2 flex-1/2 w-1/2 justify-stretched">
-            <div>
+          <div className="flex flex-row gap-2 justify-stretched h-32 items-stretch">
+            <div className="w-1/2 h-full">
               <span>Before:</span>
-              <TextPane text={bookText?.substring(0,textLimit)} />
+              <TextPane
+                className="min-h-32 max-h-96 overflow-y-auto"
+                text={bookText?.substring(0,textLimit)} />
             </div>
-            <div>
-              <span>Translated:</span>
-              <TextPane text={translatedBookText?.substring(0,textLimit) ?? ''} />
-            </div>
-          </div>
 
+        {translatedBookText && (
+          <div className="w-1/2 h-full">
+            <span>Translated:</span>
+            <TextPane
+              className="min-h-32 max-h-96 overflow-y-auto"
+              text={translatedBookText?.substring(0,textLimit) ?? ''}
+            />
+          </div>
         )}
-      </main>
-    </div>
+        </div>
+        )}
+    </main>
   );
 }
