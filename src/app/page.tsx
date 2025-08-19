@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react";
-import {BarLoader} from "react-spinners";
+import {BeatLoader, ClipLoader, DotLoader, PulseLoader, ScaleLoader, SquareLoader, SyncLoader} from "react-spinners";
 
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);
@@ -34,8 +34,6 @@ export default function Home() {
   }
 
   async function handleTranslate(){
-    console.error('handling translate once called');
-
     if (!bookText) return
     setLoadingTranslate(true);
 
@@ -78,12 +76,15 @@ export default function Home() {
           </label>
 
           {/* Show translate button  */}
-          <button className={`px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer
+          <button className={`px-4 py-2 bg-green-600 h-10 text-white rounded hover:bg-green-700 cursor-pointer
             ${bookText ? '' : 'hidden'}`}
             onClick={handleTranslate}
             disabled={!bookText || loadingTranslate}
           >
-            {loadingTranslate ? <BarLoader color="#36d7b7" /> : 'Translate'}
+            {/* Translate button Loading spinner */}
+            {loadingTranslate ? <SyncLoader color="#36d7b7" cssOverride=
+            {{transform: 'scale(0.7)'}}
+            /> : 'Translate'}
           </button>
           {/* File name display */}
           {fileName && <div className="text-sm text-gray-600">{fileName}</div>}
