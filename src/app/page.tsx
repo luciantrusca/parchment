@@ -1,10 +1,12 @@
 'use client';
 import { useState } from "react";
+import {BarLoader} from "react-spinners";
 
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);
   const [bookText, setBookText] = useState<string | null>(null);
   const [translatedBookText, setTranslatedBookText] = useState<string | null>(null);
+  const [loadingTranslate, setLoadingTranslate] = useState<boolean>(false);
   const textLimit = 1000;
   let [targetLanguage, setTargetLanguage] = useState<string>('romanian');
 
@@ -36,6 +38,7 @@ export default function Home() {
 
   async function handleTranslate(){
     if (bookText) {
+      setLoadingTranslate(true);
       const res = await fetch ('/api/translate', {
         method: 'POST',
         body: JSON.stringify({ text: bookText, targetLanguage: targetLanguage }),
@@ -49,6 +52,10 @@ export default function Home() {
         const { translatedText } = await res.json();
         console.log('Translated text:', translatedText);
         setTranslatedBookText(translatedText);
+        setLoadingTranslate(false);
+      }
+      else {
+        setLoadingTranslate(false);
       }
     }
   }
@@ -61,7 +68,7 @@ export default function Home() {
 
         {/* Upload & settings */}
         <div className="flex items-center gap-4">
-          <label className="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer">
+          <label className="px-4 py-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700">
             Upload EPUB
             <input
               type="file"
@@ -70,29 +77,31 @@ export default function Home() {
               className="hidden"
             />
           </label>
-          {fileName && <span className="text-sm text-gray-600">{fileName}</span>}
+
           {/* Show translate button  */}
-          <button className={`px-4 py-2 bg-green-600 text-white rounded
+          <button className={`px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer
             ${bookText ? '' : 'hidden'}`}
             onClick={handleTranslate}
           >
-            Translate
+            {loadingTranslate ? <BarLoader color="#36d7b7" /> : 'Translate'}
           </button>
+          {/* File name display */}
+          {fileName && <div className="text-sm text-gray-600">{fileName}</div>}
         </div>
 
         {/* Text before & after */}
         {bookText && (
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 flex-1/2 w-1/2 justify-stretched">
             <div>
               <span>Before:</span>
               <div className="bg-amber-100 text-black p-2">{bookText?.substring(0,textLimit)}</div>
             </div>
-
             <div>
               <span>Translated:</span>
               <div className="bg-amber-100 text-black p-2">{translatedBookText?.substring(0,textLimit)}</div>
             </div>
           </div>
+
         )}
       </main>
     </div>
