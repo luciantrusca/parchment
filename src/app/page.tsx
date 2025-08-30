@@ -1,7 +1,8 @@
 'use client';
 import { useState } from "react";
 import {BeatLoader, ClipLoader, DotLoader, PulseLoader, ScaleLoader, SquareLoader, SyncLoader} from "react-spinners";
-import TextPane from "../components/TextPane.tsx";
+import TextPane from "../components/TextPane";
+import TextPaneParchment from "@/components/TextPaneParchment";
 
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);
@@ -95,7 +96,7 @@ export default function Home() {
           <div className="flex flex-row gap-2 justify-stretched h-32 items-stretch">
             <div className="w-1/2 h-full">
               <span>Before:</span>
-              <TextPane
+              <TextPaneParchment
                 className="min-h-32 max-h-96 overflow-y-auto"
                 text={bookText?.substring(0,textLimit)} />
             </div>
@@ -103,7 +104,7 @@ export default function Home() {
         {translatedBookText && (
           <div className="w-1/2 h-full">
             <span>Translated:</span>
-            <TextPane
+            <TextPaneParchment
               className="min-h-32 max-h-96 overflow-y-auto"
               text={translatedBookText?.substring(0,textLimit) ?? ''}
             />
