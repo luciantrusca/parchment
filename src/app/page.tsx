@@ -1,7 +1,7 @@
 'use client';
 import { useState } from "react";
 import {BeatLoader, ClipLoader, DotLoader, PulseLoader, ScaleLoader, SquareLoader, SyncLoader} from "react-spinners";
-import TextPane from "./TextPane.tsx";
+import TextPane from "../components/TextPane.tsx";
 
 export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null);

@@ -47,3 +47,5 @@ specs.md
 package.json
 package-lock.json
 .gitignore
+
+.storybook
