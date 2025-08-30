@@ -15,12 +15,14 @@ export default function Home() {
     const file = e.target.files?.[0];
     if (!file) return;
     setFileName(file.name);
-  // 1) Validate file (e.g. name.endsWith('.epub')
+
+    // 1) Validate file (e.g. name.endsWith('.epub')
     if (!file.name?.endsWith('.epub')) {
       alert('Please upload a valid EPUB file.');
       return;
     }
-    // 4) Send to server
+
+    // 2) Send to server
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: file,
@@ -28,7 +30,8 @@ export default function Home() {
         'Content-Type': 'application/epub+zip',
       }
     });
-  // 5) Handle response:
+
+    // 3) Handle response:
     const result = await response.text();
     response.ok && setBookText(result);
     console.log('Selected file:', file);
