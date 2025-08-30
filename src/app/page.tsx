@@ -1,7 +1,6 @@
 'use client';
 import { useState } from "react";
 import {BeatLoader, ClipLoader, DotLoader, PulseLoader, ScaleLoader, SquareLoader, SyncLoader} from "react-spinners";
-import TextPane from "../components/TextPane";
 import TextPaneParchment from "@/components/TextPaneParchment";
 
 export default function Home() {
@@ -61,8 +60,8 @@ export default function Home() {
 
   return (
       <main className="font-sans m-5 align-middle items-center min-h-screen flex flex-col ">
-        <h1 className="text-4xl font-bold">Parchment</h1>
-        <p className="text-lg mb-3">AI powered EPUB translation tool.</p>
+        <h1 className="text-4xl font-bold font-['Pirata_One']">Parchment</h1>
+        <p className="text-lg mb-3 font-['Pirata_One']">AI powered EPUB translation tool.</p>
 
         {/* Upload & settings */}
         <div className="flex items-center gap-4">

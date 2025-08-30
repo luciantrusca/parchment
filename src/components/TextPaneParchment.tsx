@@ -38,7 +38,7 @@ export default function TextPaneParchment({ text, title, color, className }: { t
         {/* Content */}
         <div style={{ ...contentStyles, position: 'relative' }} className="space-y-[0.75em]">
           {title && <p className="text-[2em] font-['Pirata_One'] text-center text-gray-600">{title}</p>}
-          <p className="text-[1.25em] text-justify">{text}</p>
+          <p className="text-[1em] text-justify">{text}</p>
         </div>
       </div>
     </main>
